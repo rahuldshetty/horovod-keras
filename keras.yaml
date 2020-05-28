@@ -1,0 +1,52 @@
+apiVersion: kubeflow.org/v1alpha2
+kind: MPIJob
+metadata:
+  name: keras-sample
+spec:
+  slotsPerWorker: 1
+  cleanPodPolicy: Running
+  mpiReplicaSpecs:
+    Launcher:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - image: rahuldshetty/horovod-keras
+            name: mpi-launcher
+            command:
+            - mpirun
+            args:
+            - -np
+            - "8"
+            - --allow-run-as-root
+            - -bind-to
+            - none
+            - -map-by
+            - slot
+            - -x
+            - LD_LIBRARY_PATH
+            - -x
+            - PATH
+            - -mca
+            - pml
+            - ob1
+            - -mca
+            - btl
+            - ^openib
+            - python
+            - /examples/main-keras.py
+            resources:
+              limits:
+                cpu: 2
+                memory: 4Gi
+    Worker:
+      replicas: 8
+      template:
+        spec:
+          containers:
+          - image: rahuldshetty/horovod-keras
+            name: mpi-worker
+            resources:
+              limits:
+                cpu: 2
+                memory: 4Gi
