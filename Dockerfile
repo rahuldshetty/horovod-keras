@@ -71,8 +71,8 @@ RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_confi
     mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config && mkdir /examples
 
 # Download the dataset into local file system
-RUN mkdir -p files/
-RUN curl https://transfer.sh/Huinp/data1.h5 -o ./files/data1.h5
+RUN mkdir -p examples/files/
+RUN curl https://transfer.sh/Huinp/data1.h5 -o examples/files/data1.h5
 
 # Get example python scripts
 COPY main-keras.py /examples
