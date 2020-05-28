@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     # Horovod: Specify `experimental_run_tf_function=False` to ensure TensorFlow
     # uses hvd.DistributedOptimizer() to compute gradients.
-    model.compile(loss="sparse_categorical_crossentropy", optimizer=opt, metrics=["accuracy"],experimental_run_tf_function=False)
+    model.compile(loss="sparse_categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
 
     callbacks = [
         # Horovod: broadcast initial variable states from rank 0 to all other processes.
