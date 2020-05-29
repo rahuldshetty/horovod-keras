@@ -26,13 +26,13 @@ def loadDataH5():
     return trainX, trainY, valX, valY 
 
 class TimingCallback(tf.keras.callbacks.Callback):
-    def __init__():
+    def __init__(self):
         self.logs=[]
   
-    def on_epoch_begin(epoch, logs={}):
+    def on_epoch_begin(self, epoch, logs={}):
         self.starttime=time()
   
-    def on_epoch_end(epoch, logs={}):
+    def on_epoch_end(self, epoch, logs={}):
         time_interval = time()-self.starttime
         print("Time taken for epoch {} : {}".format(epoch, time_interval))
         self.logs.append(time_interval)
