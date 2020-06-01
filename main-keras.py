@@ -85,7 +85,7 @@ if __name__ == '__main__':
     History = model.fit(
         trainX, 
         trainY,
-        epochs=NUM_EPOCHS,
+        epochs=epochs,
         validation_data=(testX, testY), 
         callbacks=callbacks, 
         verbose=1 if hvd.rank() == 0 else 0)
