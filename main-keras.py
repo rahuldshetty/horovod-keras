@@ -55,7 +55,7 @@ if __name__ == '__main__':
     classes=np.unique(trainY).size
     
     # Horovod: adjust learning rate based on lr_scaler.
-    opt = tf.keras.optimizers.Adadelta(lr=0.1 * hvd.size())
+    opt = tf.keras.optimizers.Adam(lr=0.1 * hvd.size())
 
     # Horovod: add Horovod DistributedOptimizer.
     opt = hvd.DistributedOptimizer(opt)
