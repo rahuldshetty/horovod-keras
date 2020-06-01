@@ -17,7 +17,7 @@ spec:
             - mpirun
             args:
             - -np
-            - "8"
+            - "1"
             - --allow-run-as-root
             - -bind-to
             - none
@@ -40,7 +40,7 @@ spec:
                 cpu: 2
                 memory: 4Gi
     Worker:
-      replicas: 8
+      replicas: 1
       template:
         spec:
           containers:

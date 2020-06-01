@@ -6,6 +6,11 @@ import tensorflow.keras.backend as K
 from lib import cnn
 from time import time
 import math
+from datetime import datetime
+
+def print_datetime(msg):
+    now = datetime.now()
+    print(msg, now)
 
 # Initialize Horovod
 hvd.init()
@@ -43,7 +48,7 @@ if __name__ == '__main__':
     NUM_EPOCHS =50
 
     # Horovod: adjust number of epochs based on number of Processing units.
-    epochs = int(math.ceil(NUM_EPOCHS / hvd.size()))
+    steps_per_epoch = int(math.ceil(NUM_EPOCHS / hvd.size()))
 
     inshape=trainX.shape[1:]
     classes=np.unique(trainY).size
@@ -73,15 +78,18 @@ if __name__ == '__main__':
     if hvd.rank() == 0:
         callbacks.append(tf.keras.callbacks.ModelCheckpoint('./checkpoint.h5'))
 
-
+    print_datetime("Training initiated at: ")
+    
     print (model.summary())
     print("Training network...")
     History = model.fit(
         trainX, 
         trainY,
-        batch_size=16, 
-        epochs=epochs, 
+        epochs=NUM_EPOCHS,
+        steps_per_epoch = steps_per_epoch,
         validation_data=(testX, testY), 
         callbacks=callbacks, 
         verbose=1 if hvd.rank() == 0 else 0)
     print ("Test Data Loss and Accuracy: ", model.evaluate(testX, testY))
+    
+    print_datetime("Training terminated at: ")
