@@ -55,7 +55,7 @@ if __name__ == '__main__':
     classes=np.unique(trainY).size
     
     # Horovod: adjust learning rate based on lr_scaler.
-    opt = tf.keras.optimizers.SGD(lr=0.01 * hvd.size())
+    opt = tf.keras.optimizers.Adadelta(lr=0.1 * hvd.size())
 
     # Horovod: add Horovod DistributedOptimizer.
     opt = hvd.DistributedOptimizer(opt)
@@ -91,6 +91,7 @@ if __name__ == '__main__':
         validation_data=(testX, testY), 
         callbacks=callbacks, 
         verbose=1 if hvd.rank() == 0 else 0)
+
     print ("Test Data Loss and Accuracy: ", model.evaluate(testX, testY))
     
     print_datetime("Training terminated at: ")
