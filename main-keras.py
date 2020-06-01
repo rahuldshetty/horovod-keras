@@ -45,16 +45,16 @@ class TimingCallback(tf.keras.callbacks.Callback):
 if __name__ == '__main__':
     trainX, trainY, testX, testY = loadDataH5()
     
-    NUM_EPOCHS =50
+    NUM_EPOCHS = 50
 
     # Horovod: adjust number of epochs based on number of Processing units.
-    steps_per_epoch = int(math.ceil(NUM_EPOCHS / hvd.size()))
+    epochs = int(math.ceil(NUM_EPOCHS / hvd.size()))
 
     inshape=trainX.shape[1:]
     classes=np.unique(trainY).size
     
     # Horovod: adjust learning rate based on lr_scaler.
-    opt = tf.keras.optimizers.SGD(lr=0.01 * hvd.size())
+    opt = tf.keras.optimizers.SGD(lr=0.01)
 
     # Horovod: add Horovod DistributedOptimizer.
     opt = hvd.DistributedOptimizer(opt)
@@ -86,7 +86,6 @@ if __name__ == '__main__':
         trainX, 
         trainY,
         epochs=NUM_EPOCHS,
-        steps_per_epoch = steps_per_epoch,
         validation_data=(testX, testY), 
         callbacks=callbacks, 
         verbose=1 if hvd.rank() == 0 else 0)
