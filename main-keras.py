@@ -45,7 +45,7 @@ class TimingCallback(tf.keras.callbacks.Callback):
 if __name__ == '__main__':
     trainX, trainY, testX, testY = loadDataH5()
     
-    NUM_EPOCHS = 100
+    NUM_EPOCHS = 200
 
     # Horovod: adjust number of epochs based on number of Processing units.
     epochs = int(math.ceil(NUM_EPOCHS / hvd.size()))
